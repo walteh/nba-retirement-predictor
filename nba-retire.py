@@ -1,6 +1,6 @@
 import pandas as pd 
 import numpy as np 
-import matplotlib.pyplot as plt 
+# import matplotlib.pyplot as plt 
 
 from sklearn.metrics import confusion_matrix
 # y = pd.read_csv('./created/retire.csv')
@@ -13,14 +13,8 @@ X = df.iloc[:, 5:-1]
 
 # y = target values, last column of the data frame
 y = df.iloc[:, -1]
-vinceIndex = df.loc[df['id']=='anthoca01-2019'].index[0]
-lebronIndex = df.loc[df['id']=='anthoca01-2019'].index[0]
 
-# vince cartevi01
-# melo anthoca01-2010
-
-
-vince = df.iloc[vinceIndex:vinceIndex+1, 5:-1]
+# vince = df.iloc[vinceIndex:vinceIndex+1, 5:-1]
 # print(vince)
 
 # filter out the applicants that got admitted
@@ -29,46 +23,104 @@ retired = df.loc[y == 1]
 # filter out the applicants that din't get admission
 not_retired = df.loc[y == 0]
 
-# print(X)
+print(df)
 
 
 from sklearn.model_selection import train_test_split 
-xtrain, xtest, ytrain, ytest = train_test_split(X, y, test_size = 0.25) 
-
 from sklearn.linear_model import LogisticRegression 
+from sklearn.metrics import accuracy_score 
+
+xtrain, xtest, ytrain, ytest = train_test_split(X, y, test_size = 0.25) 
 model = LogisticRegression(fit_intercept=False, class_weight=({0: 2, 1: 2})) 
-
-# print(xtrain)
-
 model.fit(xtrain, ytrain) 
-
 r_sq = model.score(xtest, ytest)
-
 y_pred = model.predict(xtest) 
-vince_pred = model.predict_proba(vince) 
+print() 
+
+print ("Accuracy : ", accuracy_score(ytest, y_pred)) 
+
+print() 
 
 confusion = confusion_matrix(ytest, y_pred)
-
-print('confusion:', confusion)
+print('confusion matrix:')
+print(confusion)
 
 confusion_accuracy = (confusion[0][0] + confusion[1][1])/(confusion[0][0] + confusion[0][1] + confusion[1][0] + confusion[1][1])
-
 error_rate = (confusion[0][1] + confusion[1][0])/(confusion[0][0] + confusion[0][1] + confusion[1][0] + confusion[1][1])
 
 print('confusion error rate:', error_rate)
 print('confusion accuracy:', confusion_accuracy)
 
+print()
 
-print('Vince: ', vince_pred)
+years = ['2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019']
+for i in years:
+  vinceIndex = df.loc[df['id']==f'anthoca01-{i}'].index[0]
+  vince = df.iloc[vinceIndex:vinceIndex+1, 5:-1]
+  vince_pred = model.predict_proba(vince) 
+  print(f'Vince Carter ({i})', vince_pred)
 
+print()
+years = ['2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019']
+for i in years:
+  vinceIndex = df.loc[df['id']==f'jamesle01-{i}'].index[0]
+  vince = df.iloc[vinceIndex:vinceIndex+1, 5:-1]
+  vince_pred = model.predict_proba(vince) 
+  print(f'Lebron James ({i})', vince_pred)
+
+print()
+years = ['2010', '2011', '2012', '2013', '2014', '2015', '2016']
+for i in years:
+  vinceIndex = df.loc[df['id']==f'bryanko01-{i}'].index[0]
+  vince = df.iloc[vinceIndex:vinceIndex+1, 5:-1]
+  vince_pred = model.predict_proba(vince) 
+  print(f'Kobe Bryant ({i})', vince_pred)
+
+print()
+years = ['2017', '2018', '2019']
+for i in years:
+  vinceIndex = df.loc[df['id']==f'siakapa01-{i}'].index[0]
+  vince = df.iloc[vinceIndex:vinceIndex+1, 5:-1]
+  vince_pred = model.predict_proba(vince) 
+  print(f'Pascal Siakam ({i})', vince_pred)
+
+print()
+years = ['2017', '2018', '2019']
+for i in years:
+  vinceIndex = df.loc[df['id']==f'vanvlfr01-{i}'].index[0]
+  vince = df.iloc[vinceIndex:vinceIndex+1, 5:-1]
+  vince_pred = model.predict_proba(vince) 
+  print(f'Fred Vanvleet ({i})', vince_pred)
+
+print()
+years = ['2018', '2019']
+for i in years:
+  vinceIndex = df.loc[df['id']==f'fultzma01-{i}'].index[0]
+  vince = df.iloc[vinceIndex:vinceIndex+1, 5:-1]
+  vince_pred = model.predict_proba(vince) 
+  print(f'Fultz ({i})', vince_pred)
+
+print()
+years = ['2018', '2019']
+for i in years:
+  vinceIndex = df.loc[df['id']==f'balllo01-{i}'].index[0]
+  vince = df.iloc[vinceIndex:vinceIndex+1, 5:-1]
+  vince_pred = model.predict_proba(vince) 
+  print(f'Lonzo Ball ({i})', vince_pred)
+print()
 
 # print(xtest)
 
-from sklearn.metrics import accuracy_score 
-print ("Accuracy : ", accuracy_score(ytest, y_pred)) 
+# health data
+# how long they are looking for data
+# weekly parking model to predict spots - real time data
+# administratiors that say this lot is full
+# user selects building and they send you to the closest lot
 
-import seaborn as sns
-sns.regplot(x='balance', y='default', data=y_pred, logistic=True)
+
+
+# import seaborn as sns
+# sns.regplot(x='balance', y='default', data=y_pred, logistic=True)
 
 # X = np.c_[np.ones((X.shape[0], 1)), X]
 # y = y[:, np.newaxis]
